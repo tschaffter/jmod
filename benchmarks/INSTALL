@@ -12,9 +12,7 @@ The header of each class provides detailed information about the implementation 
 Installing LFR binaries
 -----------------------
 
-LFRBenchmark requires the installation of Andrea Lancichinetti's binaries for generating LFR benchmarks. There are in total four binaries to install for generating:
-
-* Undirected and unweighted LFR graphs (binary_networks.tar.gz)
+LFRBenchmark requires the installation of Andrea Lancichinetti's binaries for generating LFR benchmarks.
 
 1. Download the four archives from Andrea Lancichinetti's website and place them in the 'benchmarks' directory located at the root of this project
   * [binary_networks.tar.gz](https://sites.google.com/site/andrealancichinetti/files/binary_networks.tar.gz)
