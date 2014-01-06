@@ -1,0 +1,35 @@
+digraph "Ecoli-2" {
+	rankdir=LR;
+	"seqA" [position="139,239"];
+	"hupB" [position="132,169"];
+	"pgm" [position="41,155"];
+	"hupA" [position="110,151"];
+	"tyrP" [position="69,222"];
+	"galK" [position="200,129"];
+	"galM" [position="140,77"];
+	"galT" [position="170,103"];
+	"galR" [position="196,43"];
+	"galS" [position="225,68"];
+	"galR" -> "galM" [value="+-"];
+	"galR" -> "galT" [value="+-"];
+	"galR" -> "galS" [value="-"];
+	"galR" -> "galR" [value="-"];
+	"galR" -> "galK" [value="+-"];
+	"galS" -> "galM" [value="+-"];
+	"galS" -> "galT" [value="+-"];
+	"galS" -> "galS" [value="-"];
+	"galS" -> "galR" [value="-"];
+	"galS" -> "galK" [value="+-"];
+	"hupB" -> "seqA" [value="-"];
+	"hupB" -> "pgm" [value="-"];
+	"hupB" -> "galM" [value="-"];
+	"hupB" -> "tyrP" [value="-"];
+	"hupB" -> "galT" [value="-"];
+	"hupB" -> "galK" [value="-"];
+	"hupA" -> "seqA" [value="-"];
+	"hupA" -> "galK" [value="-"];
+	"hupA" -> "galT" [value="-"];
+	"hupA" -> "tyrP" [value="-"];
+	"hupA" -> "galM" [value="-"];
+	"hupA" -> "pgm" [value="-"];
+}

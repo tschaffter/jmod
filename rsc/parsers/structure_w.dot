@@ -1,0 +1,36 @@
+digraph "Ecoli-2" {
+	rankdir=LR;
+	outputorder=edgesfirst;
+	"galK" [];
+	"galM" [];
+	"galR" [];
+	"galS" [];
+	"galT" [];
+	"hupA" [];
+	"hupB" [];
+	"pgm" [];
+	"seqA" [];
+	"tyrP" [];
+	"galR" -> "galK" [];
+	"galR" -> "galM" [];
+	"galR" -> "galR" [];
+	"galR" -> "galS" [];
+	"galR" -> "galT" [];
+	"galS" -> "galK" [];
+	"galS" -> "galM" [];
+	"galS" -> "galR" [];
+	"galS" -> "galS" [];
+	"galS" -> "galT" [];
+	"hupA" -> "galK" [];
+	"hupA" -> "galM" [];
+	"hupA" -> "galT" [];
+	"hupA" -> "pgm" [];
+	"hupA" -> "seqA" [];
+	"hupA" -> "tyrP" [];
+	"hupB" -> "galK" [];
+	"hupB" -> "galM" [];
+	"hupB" -> "galT" [];
+	"hupB" -> "pgm" [];
+	"hupB" -> "seqA" [];
+	"hupB" -> "tyrP" [];
+}
