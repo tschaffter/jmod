@@ -1,0 +1,10 @@
+<center>Project webpage:<br>http://tschaffter.ch/projects/jmod</center>
+<center>Tip: Use <i>regular expressions</i> to select<br>multiple networks, e.g. PATH/network_*.tsv</center>
+<center>Tip: Networks exported in GML format can <br>be visualized using Cytoscape (cytoscape.org)</center>
+<center>Tip: Networks exported in DOT format can <br>be visualized using Graphviz (graphviz.org)</center>
+<center>Tip: Jmod also provides a command-line interface<br>(open a console and type <i>java -jar jmod.jar --help</i>)</center>
+<center>Tip: Visualize the <i>community tree</i><br>using the Matlab command <i>dendrogram</i></center>
+<center>Tip: Hold the mouse cursor over a<br>graphical element to display its tooltips</center>
+<center>Tip: Jmod can load custom module detection<br>methods at startup (see Jmod User Manual)</center>
+<center>Tip: Jmod can detect modules in<br>multiple networks simultaneously</center>
+<center>Tip: Click on <i>Log</i> to display detailed<br>information about the processes running</center>
