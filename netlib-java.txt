@@ -1,0 +1,36 @@
+MTJ and netlib-java
+===================
+
+Matrix-toolkits-java (MTJ) is a high-performance library for developing linear algebra applications.
+netlib-java is used by MTJ to provide the following feature:
+
+* If Fortran BLAS, LAPACK, and ARPACK libraries are installed, they are used
+* Otherwise, an efficient java implementation provided by netlib-java is used
+
+The detection of the native libraries is performed automatically the first time a project uses a BLAS, LAPACK, or ARPACK methods. However, it is possible to force the use of a given implementation using VM arguments. For example, the java implementation of the linear algebra libraries can be used by using the VM arguments:
+
+-Dcom.github.fommil.netlib.BLAS=com.github.fommil.netlib.F2jBLAS
+-Dcom.github.fommil.netlib.LAPACK=com.github.fommil.netlib.F2jLAPACK
+-Dcom.github.fommil.netlib.ARPACK=com.github.fommil.netlib.F2jARPACK
+
+https://github.com/fommil/matrix-toolkits-java
+https://github.com/fommil/netlib-java
+
+From netlib-java documentation
+------------------------------
+
+A specific implementation of netlib can be forced like so:
+
+-Dcom.github.fommil.netlib.BLAS=com.github.fommil.netlib.NativeRefBLAS
+-Dcom.github.fommil.netlib.LAPACK=com.github.fommil.netlib.NativeRefLAPACK
+-Dcom.github.fommil.netlib.ARPACK=com.github.fommil.netlib.NativeRefARPACK
+
+And a specific (non-standard) native binary may be forced like so:
+
+-Dcom.github.fommil.netlib.NativeSystemBLAS.natives=netlib-native_system-myos-myarch.so
+
+To turn off natives altogether, add these to the JVM flags:
+
+-Dcom.github.fommil.netlib.BLAS=com.github.fommil.netlib.F2jBLAS
+-Dcom.github.fommil.netlib.LAPACK=com.github.fommil.netlib.F2jLAPACK
+-Dcom.github.fommil.netlib.ARPACK=com.github.fommil.netlib.F2jARPACK
