@@ -1,7 +1,7 @@
 Jmod
 ====
 
-Biological interaction networks are often **organized into groups** - also called *clusters*, *modules*, or *communities* - of related genes and proteins carrying out specific biological functions. Community detection has numerous applications for systems that can be described as graphs, for example **metabolic, neural, social and technological networks**.
+Biological interaction networks are often organized into groups - also called *clusters*, *modules*, or *communities* - of related genes and proteins carrying out specific biological functions. Community detection has numerous applications for systems that can be described as graphs, for example **metabolic, neural, social and technological networks**.
 
 Jmod is released as a Java library that can be easily integrated in third-party software applications to perform module detection in networks. It provides a **repository of community detection methods** which is aimed to be further extended. Jmod is also available as a standalone application with both graphical and commandline user interfaces.
 
