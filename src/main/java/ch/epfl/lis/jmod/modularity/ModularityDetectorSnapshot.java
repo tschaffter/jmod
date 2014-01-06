@@ -250,7 +250,7 @@ public class ModularityDetectorSnapshot {
 //		int newState = absStates_[newNeighborNodeOfNode];
 		int newState = absStates_.get(modDetector_.getNetwork().getNode(newNeighborNodeOfNode));
 		// content of the snapshot
-		String content = "\"" + modDetector_.getNetwork().getNode(nodeIndex).getName() + "\"\t" + newState + File.separator;
+		String content = "\"" + modDetector_.getNetwork().getNode(nodeIndex).getName() + "\"\t" + newState + System.lineSeparator();
 		
 		String filename = rootFilename_ + "_" + snapshotIndex_ + (filenameSuffix.compareTo("") == 0 ? "" : "_") + filenameSuffix + ".txt";
 		FileWriter fw = new FileWriter(new File(filename), false);
@@ -288,7 +288,7 @@ public class ModularityDetectorSnapshot {
 			// use si for the state of the node
 			for (int i = 0; i < s.size(); i++) {
 				state = (s.get(i) > 0 ? state2 : state1);
-				content += "\"" + communityNodeNames_.get(i) + "\"\t" + state + File.separator;
+				content += "\"" + communityNodeNames_.get(i) + "\"\t" + state + System.lineSeparator();
 				// save the state of the node
 //				int nodeIndexInNetwork = modDetector_.getNetwork().getNodeIndex(communityNodeNames_.get(i));
 //				absStates_[nodeIndexInNetwork] = state;
@@ -298,7 +298,7 @@ public class ModularityDetectorSnapshot {
 			for (int i = 0; i < s.size(); i++) {
 				if (s.get(i) != previousS.get(i)) { // saves only if the node state is different from before
 					state = (s.get(i) > 0 ? state2 : state1);
-					content += "\"" + communityNodeNames_.get(i) + "\"\t" + state + File.separator;
+					content += "\"" + communityNodeNames_.get(i) + "\"\t" + state + System.lineSeparator();
 					// save the state of the node
 //					int nodeIndexInNetwork = modDetector_.getNetwork().getNodeIndex(communityNodeNames_.get(i));
 //					absStates_[nodeIndexInNetwork] = state;
@@ -420,7 +420,7 @@ public class ModularityDetectorSnapshot {
 			max = Math.max(max, currentState2_);
 			
 			FileWriter fw = new FileWriter(new File(largestStateValueUri_), false);
-			fw.write("" + max + File.separator);
+			fw.write("" + max + System.lineSeparator());
 			fw.close();
 		}
 		

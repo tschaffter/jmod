@@ -101,7 +101,7 @@ import com.esotericsoftware.minlog.Log;
 public class Jmod extends SwingWorker<Void, Void> {
 	
 	/** Current version of Jmod. */
-	public static final String VERSION = "1.1 Beta";
+	public static final String VERSION = "1.2 Beta";
 
 	/** Reference to batch experiment. */
 	private JmodBatch batch_ = null;
@@ -265,7 +265,7 @@ public class Jmod extends SwingWorker<Void, Void> {
 		options_.addOption(OptionBuilder.withValueSeparator()
 				.withLongOpt("dataset")
 				.withDescription("Specify the dataset to save (default: none).\n" +
-						"MODULARITY: Save the modularity Q, the number of indivisible communities and the computation time in milliseconds to file.\n" +
+						"METRICS: Save the modularity Q, the number of indivisible communities and the computation time in milliseconds to file.\n" +
 						"COMMUNITY_NETWORKS <FORMAT>: Save each community to network file using the given file format.\n" +
 						"COMMUNITY_COLOR <FORMAT>: Save the input network in GML or DOT format with nodes colored depending on which community they belong to (Cytoscape and Graphviz can be used to visualize networks in GML and DOT formats, respectively).\n" +
 						"COMMUNITY_TREE: Save the dendrogram of the hierarchical community tree (open it with the Matlab command \"dendrogram\"). An additional file describes in which indivisible community each vertex belong to.\n" +
@@ -354,7 +354,7 @@ public class Jmod extends SwingWorker<Void, Void> {
 				// option ALL can only be in first position
 				boolean datasetAll = (datasets[0].compareTo("ALL") == 0);
 				for (int i = 0; i < datasets.length; i++) {
-					if (datasets[i].compareTo("MODULARITY") == 0 || datasetAll) {
+					if (datasets[i].compareTo("METRICS") == 0 || datasetAll) {
 						settings.setExportBasicDataset(true);
 					}
 					else if (datasets[i].compareTo("COMMUNITY_NETWORKS") == 0 || datasetAll) {
@@ -648,7 +648,7 @@ public class Jmod extends SwingWorker<Void, Void> {
 				exportCommunities(new File(outputDirectoryStr + rawFilename + "_inferred_community.dat").toURI());
 			}
 		} catch (Exception e) {
-			Log.warn("Jmod", "Unable to export dataset content MODULARITY.", e);
+			Log.warn("Jmod", "Unable to export dataset content METRICS.", e);
 		}
 		
 		// save each community to network file in the given format

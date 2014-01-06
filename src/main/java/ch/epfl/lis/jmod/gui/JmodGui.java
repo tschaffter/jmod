@@ -357,6 +357,8 @@ public class JmodGui extends JmodDialog implements ActionListener {
 	
 	/** Constructor. */
 	private JmodGui() throws Exception {
+		datasetSnapshotsCBox_.setText("Community detection snapshots");
+		datasetModularityCBox_.setText("Standard metrics");
 		
 		initialize();
 	}
