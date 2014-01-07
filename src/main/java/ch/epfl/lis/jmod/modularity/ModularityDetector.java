@@ -192,7 +192,7 @@ public class ModularityDetector {
 	// ============================================================================
 	// PUBLIC METHODS
 	
-    /** Constructor */
+    /** Default constructor. */
 	public ModularityDetector() {
 		
 		initialize();
@@ -200,7 +200,7 @@ public class ModularityDetector {
 
 	// ----------------------------------------------------------------------------
 	
-	/** Constructor */
+	/** Constructor. */
 	public ModularityDetector(final JmodNetwork network) throws Exception {
 		
 		initialize();
