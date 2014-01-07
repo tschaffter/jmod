@@ -1,4 +1,4 @@
-package ch.tschaffter.projects.jmod;
+package ch.epfl.lis.jmod;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
