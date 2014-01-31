@@ -94,8 +94,10 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	protected String name_ = "";
 	/** Comment about the structure. */
 	protected String comment_ = "";
-	/** Set true if the links are directed. */
+	/** Set to true if the links are directed. */
 	protected boolean directed_ = true;
+	/** Set to true if the edges are weighted. */
+	protected boolean weighted_ = true;
 	
 	/** Nodes present in the structure. */
 //	protected Map<N,Integer> nodes_ = null;
@@ -851,15 +853,16 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	// ----------------------------------------------------------------------------
 	
 	/** Returns true if at least two edges don't have the same weight. */
-	public boolean isWeighted() {
+	public void evaluateIsWeighted() {
 		
 		Iterator<E> it = edges_.values().iterator();
 		double w = it.next().getWeight();
 		while (it.hasNext()) {
-			if (Math.abs(it.next().getWeight() - w) > 1e-12)
-				return true;
+			if (Math.abs(it.next().getWeight() - w) > 1e-12) {
+				weighted_ = true;
+				return;
+			}
 		}
-		return false;
 	}
 	
 	// ----------------------------------------------------------------------------
@@ -976,6 +979,9 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	
 	public void isDirected(boolean directed) { directed_ = directed; }
 	public boolean isDirected() { return directed_; }
+	
+	public void isWeighted(boolean weighted) { weighted_ = weighted; }
+	public boolean isWeighted() { return weighted_; }
 	
 	public void setNodeFactory(NodeFactory<N> nodeFactory) { nodeFactory_ = nodeFactory; }
 	public NodeFactory<N> getNodeFactory() { return nodeFactory_; }

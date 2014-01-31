@@ -4,7 +4,7 @@
   <groupId>ch.epfl.lis.jmod</groupId>
   <artifactId>jmod</artifactId>
   <packaging>jar</packaging>
-  <version>1.2</version>
+  <version>1.2.1</version>
   <name>Jmod</name>
   <url>http://tschaffter.ch/projects/jmod</url>
   

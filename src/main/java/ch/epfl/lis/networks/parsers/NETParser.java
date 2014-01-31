@@ -375,6 +375,26 @@ public class NETParser<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 			// should be specified using *Edges or *Edgeslist and by writing A->B
 			// Just to be sure, B->A are deleted only if each A->B has a B->A
 			structure_.cleanEdges();
+			structure_.evaluateIsWeighted();
+			
+			// Force to consider the network as directed if "_directed" is included
+			// in the filename, and as undirected if "_undirected" is included.
+			if (f.getName().contains("_directed")) {
+				Log.debug("Network filename tells that the structure is directed.");
+				structure_.isDirected(true);
+			} else if (f.getName().contains("_undirected")) {
+				Log.debug("Network filename tells that the structure is undirected.");
+				structure_.isDirected(false);
+			}
+			// Force to consider the network as weighted if "_weighted" is included
+			// in the filename, and as unweighted if "_unweighted" is included.
+			if (f.getName().contains("_weighted")) {
+				Log.debug("Network filename tells that the structure is weighted.");
+				structure_.isWeighted(true);
+			} else if (f.getName().contains("_unweighted")) {
+				Log.debug("Network filename tells that the structure is unweighted.");
+				structure_.isWeighted(false);
+			}
 			
 			if (structure_.getSize() == 0)
 				throw new NetworkException("The structure doesn't contain any nodes.");
