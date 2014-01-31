@@ -1,5 +1,4 @@
-Jmod
-====
+# Jmod
 
 Biological interaction networks are often organized into groups - also called *clusters*, *modules*, or *communities* - of related genes and proteins carrying out specific biological functions. Community detection has numerous applications for systems that can be described as graphs, for example **metabolic, neural, social and technological networks**.
 
@@ -10,3 +9,7 @@ The second goal of this project is to provide an intuitive and complete environm
 One of the latest features enables to take snapshots of the community structure during community detection. This features has proven that it can provides **valuable insights into the behavior of the methods**.
 
 More detailed information is available at http://tschaffter.ch/projects/jmod.
+
+## Network formats
+
+Jmod supports TSV, GML, DOT, and NET network file format. Each format is described in detail [here](https://github.com/tschaffter/jmod/wiki).
