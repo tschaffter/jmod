@@ -863,6 +863,7 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 				return;
 			}
 		}
+		weighted_ = false;
 	}
 	
 	// ----------------------------------------------------------------------------

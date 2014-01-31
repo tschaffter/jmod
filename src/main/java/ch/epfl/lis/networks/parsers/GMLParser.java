@@ -86,6 +86,9 @@ public class GMLParser<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	
 	/** A tree map to keep track of the association node id/node (id may not start from 0). */
 	protected Map<Integer,N> nodes_ = null;
+	
+	/** Variable name of edge weights (e.g., "weight", "value", etc.). */
+	protected String edgeWeightVarName_ = "weight";
     
 	// ============================================================================
 	// PUBLIC METHODS
@@ -198,7 +201,7 @@ public class GMLParser<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	        	 // create edge
 	        	 E edge = structure_.getEdgeFactory().create();
 	
-	        	 weight = (Double) edgegml.getValue("weight", GMLObject.GMLreal);
+	        	 weight = (Double) edgegml.getValue(edgeWeightVarName_, GMLObject.GMLreal);
 	        	 if (weight == null)
 	        		 weight = 1.;
 	        	 
@@ -344,7 +347,7 @@ public class GMLParser<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 							"\t\ttarget " + targetId + System.lineSeparator());
 				
 				if (saveEdgeWeight_ && structure_.isWeighted())
-					bf.write("\t\tweight " + Double.toString(weight) + System.lineSeparator());
+					bf.write("\t\t" + edgeWeightVarName_ + " " + Double.toString(weight) + System.lineSeparator());
 //				if (saveEdgeType_ && structure_.isSigned())
 //					bf.write("\t\ttype " + value + System.lineSeparator());
 				
@@ -464,4 +467,6 @@ public class GMLParser<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	
 	public void saveGraphics(boolean b) { saveGraphics_ = b; }
 	public boolean saveGraphics() { return saveGraphics_; }
+	
+	public void setEdgeWeightVarName(String edgeWeightVarName) { edgeWeightVarName_ = edgeWeightVarName; }
 }
