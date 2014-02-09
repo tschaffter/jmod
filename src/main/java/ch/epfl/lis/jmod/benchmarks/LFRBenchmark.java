@@ -1,9 +1,12 @@
 package ch.epfl.lis.jmod.benchmarks;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -79,7 +82,7 @@ public class LFRBenchmark {
 	private static final String LFR_WEIGHTED_DIRECTED_COMMAND	= "benchmarks/bin/lfr_weighted_directed";
 	
 	/** Maximum number of concurrent threads (= pool size). */
-	private int numConcurrentThreads_ = Runtime.getRuntime().availableProcessors();
+	private int numConcurrentThreads_ = 6;//Runtime.getRuntime().availableProcessors();
 	
 	/** Command to execute. */
 	private String command_ = null;
@@ -159,13 +162,15 @@ public class LFRBenchmark {
 	/** Main method. */
 	public static void main(String args[]) {
 		
+		// weighted: mut = 0.5 or mut=muw
+		
 		try {
-			LFRBenchmark benchmark = new LFRBenchmark(LFRBenchmark.WEIGHTED_DIRECTED_NETWORKS);
-			benchmark.setBenchmarkDirectory("/media/data/LFR_test/");
-			benchmark.setMandatoryParameters(1000, 20, 50); // N, k, and maxk
+			LFRBenchmark benchmark = new LFRBenchmark(LFRBenchmark.BINARY_NETWORKS);
+			benchmark.setBenchmarkDirectory("/media/data/LFR_unweighted_undirected/");
+			benchmark.setMandatoryParameters(5000, 20, 50); // N, k, and maxk
 			benchmark.setCommunitySizes(10, 50); // minimum and maximum community size
 			benchmark.setOverlappingNodes(0, 0); // on and om
-			benchmark.setNumRepetitions(2); // number of networks generated for each set of parameters
+//			benchmark.setNumRepetitions(20); // number of networks generated for each set of parameters
 			// weighted networks (true: mut=muw, false: mut=0.5)
 //			benchmark.setMutEqualToMuw(false);
 			benchmark.setNetworkFormat(Structure.TSV);
@@ -401,6 +406,11 @@ public class LFRBenchmark {
 			try {
 				mkdir(tmpDirectoryFile);
 				mkdir(new File(targetDirectory_));
+				
+				// set random seed in time_seed.dat
+				Writer wr = new FileWriter(tmpDirectory + "time_seed.dat");
+				wr.write(new Integer((new Random()).nextInt()).toString()); // could use something better than Random()
+				wr.close();
 				
 				// default working directory is the root directory of the project
 				commandLine_ = "./../" + commandLine_;
