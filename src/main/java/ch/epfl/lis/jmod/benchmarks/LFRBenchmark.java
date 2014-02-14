@@ -167,8 +167,8 @@ public class LFRBenchmark {
 		try {
 			LFRBenchmark benchmark = new LFRBenchmark(LFRBenchmark.BINARY_NETWORKS);
 			benchmark.setBenchmarkDirectory("/media/data/LFR_unweighted_undirected/");
-			benchmark.setMandatoryParameters(5000, 20, 50); // N, k, and maxk
-			benchmark.setCommunitySizes(10, 50); // minimum and maximum community size
+			benchmark.setMandatoryParameters(1000, 20, 50); // N, k, and maxk
+			benchmark.setCommunitySizes(20, 100); // minimum and maximum community size
 			benchmark.setOverlappingNodes(0, 0); // on and om
 //			benchmark.setNumRepetitions(20); // number of networks generated for each set of parameters
 			// weighted networks (true: mut=muw, false: mut=0.5)
@@ -233,7 +233,7 @@ public class LFRBenchmark {
 			for (int muwInt = minmuwInt; muwInt <= maxmuwInt; muwInt += muwstepInt) {
 				
 				muw_ = muwInt / (double)multiplier;
-				muwDirectory = cDirectory + "muw" + new DecimalFormat("0.00").format(muw_) + File.separator;
+				muwDirectory = cDirectory + "muw" + muwInt/*new DecimalFormat("0.00").format(muw_)*/ + File.separator;
 				addMutWorkers(workers, muwDirectory);
 			}			
 		} else
@@ -298,7 +298,7 @@ public class LFRBenchmark {
 			else
 				mut_ = 0.5;
 			
-			mutDirectory = currentDirectory + "mut" + new DecimalFormat("0.00").format(mut_) + File.separator;
+			mutDirectory = currentDirectory + "mut" + (mut_*multiplier)/*new DecimalFormat("0.00").format(mut_)*/ + File.separator;
 			commandLine = getCommandLine();
 			for (int i = 1; i <= numRepetitions_; i++)
 				workers.add(new Worker(commandLine, mutDirectory, i));
@@ -307,7 +307,7 @@ public class LFRBenchmark {
 			for (int mutInt = minmutInt; mutInt <= maxmutInt; mutInt += mutstepInt) {
 				
 				mut_ = mutInt / (double)multiplier;
-				mutDirectory = currentDirectory + "mut" + new DecimalFormat("0.00").format(mut_) + File.separator;
+				mutDirectory = currentDirectory + "mut" + mutInt/*new DecimalFormat("0.00").format(mut_)*/ + File.separator;
 				commandLine = getCommandLine();
 				for (int i = 1; i <= numRepetitions_; i++)
 					workers.add(new Worker(commandLine, mutDirectory, i));
