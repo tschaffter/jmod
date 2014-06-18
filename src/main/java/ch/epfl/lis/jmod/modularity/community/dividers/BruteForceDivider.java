@@ -170,7 +170,7 @@ public class BruteForceDivider extends CommunityDivider {
 			printHelp();
 			throw new JmodException(e.getMessage());
 		} catch (Exception e) {
-			Log.error(identifier_, "Could not successfully recognized the options.", e);
+			Log.error(identifier_, "Could not recognize all the options.", e);
 			printHelp();
 			throw new JmodException(e.getMessage());
 		}

@@ -73,6 +73,7 @@ public class CommunityDividerManager {
 		dividers_.add(new GeneticAlgorithmDivider());
 		dividers_.add(new BruteForceDivider());
 		dividers_.add(new KnownModulesDivider());
+		dividers_.add(new SimulatedAnnealingSplitter());
 		
 		// load dynamically custom community divider methods
 		loadDynamicallyCustomCommunityDividers();

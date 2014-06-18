@@ -115,7 +115,7 @@ public class LFRBenchmark {
 	/** Step size used when sampling the range [minmut_, maxmut_] of the mixing parameter mut. */
 	private double mutstep_ = 0.05;
 	/** If true, mut is set to muw when generating weighted networks. */
-	private boolean mutEqualToMuw_ = true;
+	private boolean mutEqualToMuw_ = false;
 	
 	/** Minus exponent for the degree sequence. */
 	private double t1_ = 2.;
@@ -133,7 +133,7 @@ public class LFRBenchmark {
 	/** Minimum value of the mixing parameter mut. */
 	private double minmuw_ = 0.1;
 	/** Maximum value of the mixing parameter mut. */
-	private double maxmuw_ = 0.6;
+	private double maxmuw_ = 0.9;
 	/** Step size used when sampling the range [minmuw_, maxmuw_] of the mixing parameter muw. */
 	private double muwstep_ = 0.05;
 	
@@ -165,14 +165,14 @@ public class LFRBenchmark {
 		// weighted: mut = 0.5 or mut=muw
 		
 		try {
-			LFRBenchmark benchmark = new LFRBenchmark(LFRBenchmark.BINARY_NETWORKS);
-			benchmark.setBenchmarkDirectory("/media/data/LFR_unweighted_undirected/");
+			LFRBenchmark benchmark = new LFRBenchmark(LFRBenchmark.WEIGHTED_NETWORKS);
+			benchmark.setBenchmarkDirectory("/media/data/LFR_w_undir/");
 			benchmark.setMandatoryParameters(1000, 20, 50); // N, k, and maxk
-			benchmark.setCommunitySizes(20, 100); // minimum and maximum community size
+			benchmark.setCommunitySizes(10, 50); // minimum and maximum community size (20,100)
 			benchmark.setOverlappingNodes(0, 0); // on and om
 //			benchmark.setNumRepetitions(20); // number of networks generated for each set of parameters
 			// weighted networks (true: mut=muw, false: mut=0.5)
-//			benchmark.setMutEqualToMuw(false);
+			benchmark.setMutEqualToMuw(false);
 			benchmark.setNetworkFormat(Structure.TSV);
 			benchmark.generate();
 			
@@ -298,7 +298,7 @@ public class LFRBenchmark {
 			else
 				mut_ = 0.5;
 			
-			mutDirectory = currentDirectory + "mut" + (mut_*multiplier)/*new DecimalFormat("0.00").format(mut_)*/ + File.separator;
+			mutDirectory = currentDirectory + "mut" + (int)(mut_*multiplier)/*new DecimalFormat("0.00").format(mut_)*/ + File.separator;
 			commandLine = getCommandLine();
 			for (int i = 1; i <= numRepetitions_; i++)
 				workers.add(new Worker(commandLine, mutDirectory, i));
@@ -324,6 +324,8 @@ public class LFRBenchmark {
 		commandLine += " -N " + N_;
 		commandLine += " -k " + k_;
 		commandLine += " -maxk " + maxk_;
+		commandLine += " -minc " + minc_;
+		commandLine += " -maxc " + maxc_;
 		
 		if (weighted_) {
 			commandLine += " -muw " + muw_;

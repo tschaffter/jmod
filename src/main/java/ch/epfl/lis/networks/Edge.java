@@ -127,7 +127,7 @@ public class Edge<N extends INode> implements IEdge<N>, IFactory<Edge<N>> {
 	@Override
 	public boolean equals(Object obj) {
 		
-		System.out.println("equals");
+		System.out.println("obj: " + obj);
 		
 		@SuppressWarnings("unchecked")
 		Edge<N> e2 = (Edge<N>) obj;

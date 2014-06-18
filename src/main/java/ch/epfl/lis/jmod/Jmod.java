@@ -757,13 +757,13 @@ public class Jmod extends SwingWorker<Void, Void> {
 			// Hack to run the GUI with Java Web Start
 			// For an unknown reason <argument> is ignored...
 			// do not forget to change below arg into arg2 
-			String[] args2 = new String[args.length+1];
-			for (int i = 0; i < args.length; i++)
-				args2[i] = args[i];
-			args2[args2.length-1] = "--gui";
+//			String[] args2 = new String[args.length+1];
+//			for (int i = 0; i < args.length; i++)
+//				args2[i] = args[i];
+//			args2[args2.length-1] = "--gui";
 			
 			// parse the command-line options
-			jmod.parse(args2); // args2 for javaws
+			jmod.parse(args); // args2 for javaws
 			
 			jmod.run();
 			jmod.get();

@@ -76,7 +76,7 @@
       <version>1.1</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/lib/libga-1.1.jar</systemPath>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>att.grappa</groupId>
       <artifactId>grappa</artifactId>

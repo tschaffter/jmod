@@ -62,6 +62,23 @@ import ch.epfl.lis.networks.parsers.GMLParser;
  */
 public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFactory<E>> {
 	
+//	/** Supported network format. */
+//	public static enum Format {
+//		/**
+//		 * TSV format.<p>
+//		 * For unsigned networks, each line defines an edge:<br>
+//		 * <pre>
+//		 * TF \tab target \tab weight
+//		 * </pre>
+//		 * where TF and target are node IDs, and weight is the weight of the interaction.
+//		 */
+//		TSV,
+//		GML,
+//		DOT,
+//		NET,
+//		undefined;
+//	}
+	
 	/**
 	 * TSV format.<p>
 	 * For unsigned networks, each line defines an edge:<br>
@@ -181,6 +198,7 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 			E e = edgeFactory_.create();
 			e.setSource(source);
 			e.setTarget(target);
+			e.setWeight(edge.getValue().getWeight());
 			// finally, add it
 			edges_.put(e.toString(), e);
 		}
@@ -536,7 +554,7 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 		edge.setSource(source);
 		edge.setTarget(target);
 		
-		return edges_.get(edge); // uses source and target name
+		return edges_.get(edge.toString()); // uses source and target name
 	}
 	
 	// ----------------------------------------------------------------------------

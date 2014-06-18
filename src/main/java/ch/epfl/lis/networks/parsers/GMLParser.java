@@ -409,7 +409,6 @@ public class GMLParser<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 			
 			// read structure from file
 			Log.info("Reading network structure in GML format");
-//			parser.read(new File("rsc/parsers/structure.gml").toURI());
 			parser.read(new File("rsc/parsers/structure.gml").toURI());
 			Log.info("Number of nodes: " + structure.getSize());
 			Log.info("Number of edges: " + structure.getNumEdges());

@@ -49,7 +49,7 @@ import ch.epfl.lis.jmod.JmodException;
 import ch.epfl.lis.jmod.modularity.ModularityDetector;
 
 /**
- * Uses a binary genetic algorithm (GA) to split modules or communities in two.
+ * Uses a binary genetic algorithm (GA) to split communities in two.
  * 
  * @version January 24, 2012
  * 
@@ -77,6 +77,9 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 	protected int numGenerations_ = 1000;
 	/** Stopping criterion. */
 	protected int stoppingCriterion_ = Population.STOPPING_CRITERIA_GENETIC_CONVERGENCE;
+	/** If Population.STOPPING_CRITERIA_GENETIC_CONVERGENCE is used, mean normalized Hamming distance to satisfy. */
+	protected double targetMeanHammingDistance_ = 1.;
+	
 	/** Average number of nodes moved to the other community due to mutation. */
 	protected int numNodesMutated_ = 1;
 	/** Crossover type (1=one-point, 2=two-point, 3=uniform, default: 3). */
@@ -91,7 +94,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 	protected int numGaRunsPerCommunityDivision_ = 1;
 	
 	/** Use brute force approach when GA num evals > 2^{N-1}. */
-	protected boolean bf_ = true;
+	protected boolean bf_ = false;
 	
 	/** Save population individuals' fitness to file. */
 	protected boolean saveStats_ = false;
@@ -138,6 +141,13 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 				.hasArgs(1)
 				.withArgName("NUM")
 				.create("s"));
+		
+		options_.addOption(OptionBuilder.withValueSeparator()
+				.withLongOpt("targetMeanHammingDistance")
+				.withDescription("Mean Hamming distance to reach between two individuals to converge.")
+				.hasArgs(1)
+				.withArgName("NUM")
+				.create());
 		
 		options_.addOption(OptionBuilder.withValueSeparator()
 				.withLongOpt("numNodesMutated")
@@ -215,6 +225,8 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 				numGenerations_ = Integer.parseInt(cmd.getOptionValue("numGenerations"));
 			if (cmd.hasOption("stoppingCriterion"))
 				stoppingCriterion_ = Integer.parseInt(cmd.getOptionValue("stoppingCriterion"));
+			if (cmd.hasOption("targetMeanHammingDistance"))
+				targetMeanHammingDistance_ = Double.parseDouble(cmd.getOptionValue("targetMeanHammingDistance"));
 			if (cmd.hasOption("numNodesMutated"))
 				numNodesMutated_ = Integer.parseInt(cmd.getOptionValue("numNodesMutated"));
 			if (cmd.hasOption("xOverType"))
@@ -255,7 +267,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 			printHelp();
 			throw e;
 		} catch (Exception e) {
-			Log.error(identifier_, "Could not successfully recognized the options.", e);
+			Log.error(identifier_, "Could not recognize all the options.", e);
 			printHelp();
 			throw e;
 		}
@@ -325,6 +337,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 	
 	// ----------------------------------------------------------------------------
 	
+	/** Copy constructor. */
 	public GeneticAlgorithmDivider(GeneticAlgorithmDivider divider) {
 		
 		super(divider);
@@ -334,6 +347,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 		popSize_ = divider.popSize_;
 		numGenerations_ = divider.numGenerations_;
 		stoppingCriterion_ = divider.stoppingCriterion_;
+		targetMeanHammingDistance_ = divider.targetMeanHammingDistance_;
 		numNodesMutated_ = divider.numNodesMutated_;
 		crossOverType_ = divider.crossOverType_;
 		crossOverRate_ = divider.crossOverRate_;
@@ -346,7 +360,6 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 	
 	// ----------------------------------------------------------------------------
 	
-	/** Copy operator. */
 	@Override
 	public GeneticAlgorithmDivider copy() {
 		
@@ -415,6 +428,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 	        
 	        try{
 	        	pop.setStoppingCriterion(stoppingCriterion_);
+	        	pop.setTargetMeanHammingDistance(targetMeanHammingDistance_);
 	            pop.startOptimization(numGenerations_);
 	        } catch (Exception e) {
 	        	Log.error(name + "|" + identifier_, "GA unsuccessful.", e);
@@ -424,6 +438,9 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 	        // set currentSubcommunityS_ with the best solution
 	        setCurrentSubCommunityS(pop.get(0));
 	        modDetector.currentSubcommunityQ_ = modDetector.computeModularity();
+	        
+	        // gradient descent optimization (MVM)
+	        modDetector.movingVertexMethod();
 	        
 	        // save the solution if it's the best found so far
 	        if (modDetector.currentSubcommunityQ_ > bestCurrentSubcommunityQ) {
@@ -438,7 +455,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 		// assign the best solution
 		modDetector.currentSubcommunityS_.set(bestCurrentSubcommunityS);	
 	}
-	
+		
 	// ----------------------------------------------------------------------------
 	
 	/** Fitness function of the GA, which is the modularity Q or dQ associated to a module division. */
@@ -485,6 +502,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 		optionsStr += "--popSize " + popSize_;
 		optionsStr += " --numGenerations " + numGenerations_;
 		optionsStr += " --stoppingCriterion " + stoppingCriterion_;
+		optionsStr += " --targetMeanHammingDistance " + targetMeanHammingDistance_;
 		optionsStr += " --numNodesMutated " + numNodesMutated_;
 		optionsStr += " --xOverType " + crossOverType_;
 		optionsStr += " --xOverRate " + crossOverRate_;
@@ -492,7 +510,7 @@ public class GeneticAlgorithmDivider extends CommunityDivider implements Fitness
 		optionsStr += " --numElites " + numElites_;
 		optionsStr += " --numRuns " + numGaRunsPerCommunityDivision_;
 		if (bf_) optionsStr += " --bf";
-		optionsStr += " --numproc MAX";
+		optionsStr += " --numproc " + numProc_;
 		if (saveStats_) optionsStr += " --saveStats";
 		return optionsStr;
 	}
