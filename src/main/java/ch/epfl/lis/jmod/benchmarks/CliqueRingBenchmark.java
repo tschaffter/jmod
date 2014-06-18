@@ -69,7 +69,7 @@ public class CliqueRingBenchmark {
 	private int cliqueSizeStep_ = 0;
 	
 	/** Network format (TSV, GML, DOT, Pajek/NET). */
-	private int networkFormat_ = Structure.TSV;
+	private Structure.Format networkFormat_ = Structure.Format.TSV;
 	
 	// ============================================================================
 	// PUBLIC METHODS
@@ -122,7 +122,7 @@ public class CliqueRingBenchmark {
 				
 				// saves network to file
 				String networkRootFilename = benchmarkDirectory_ + "cliqueRing_" + numCliques + "_" + cliqueSize;
-				String networkFilename = networkRootFilename + Structure.FORMAT_EXTENSIONS[networkFormat_];
+				String networkFilename = networkRootFilename + Structure.getFormatExtension(networkFormat_);
 				network.write(new File(networkFilename).toURI(), networkFormat_);
 				
 				// saves _community.dat
@@ -217,7 +217,7 @@ public class CliqueRingBenchmark {
 		
 		// benchmark settings
 		String workingDirectory = "/home/tschaffter/devel/java/QLimit/cliqueRing_benchmark/";
-		int networkFormat = Structure.GML;
+		Structure.Format networkFormat = Structure.Format.GML;
 		int[] numCliques = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 		int[] cliqueSizes = {3, 5, 7, 9};
 		//int numRuns = 20;
@@ -241,9 +241,9 @@ public class CliqueRingBenchmark {
 		// output datasets
 		settings.setExportBasicDataset(true);
 		settings.setExportCommunityNetworks(false);
-		settings.setCommunityNetworkFormat(Structure.TSV);
+		settings.setCommunityNetworkFormat(Structure.Format.TSV);
 		settings.setExportColoredCommunities(false);
-		settings.setColoredCommunitiesNetworkFormat(Structure.GML);
+		settings.setColoredCommunitiesNetworkFormat(Structure.Format.GML);
 		settings.setExportCommunityTree(true);
 		settings.setExportSnapshots(true);
 		
@@ -257,7 +257,7 @@ public class CliqueRingBenchmark {
 				for (int k = 50; k < 60; k++) {
 					// loads network
 					String networkRootFilename = workingDirectory + "cliqueRing_" + numCliques[i] + "_" + cliqueSizes[j];
-					String inputNetworkFilename = networkRootFilename + Structure.FORMAT_EXTENSIONS[networkFormat];
+					String inputNetworkFilename = networkRootFilename + Structure.getFormatExtension(networkFormat);
 					Log.info("Reverse engineering " + inputNetworkFilename);
 					network = new JmodNetwork();
 					network.read(new File(inputNetworkFilename).toURI(), networkFormat);
@@ -300,5 +300,5 @@ public class CliqueRingBenchmark {
 	public void setCliqueSize(int cliqueSize) { minCliqueSize_ = maxCliqueSize_ = cliqueSizeStep_ = cliqueSize; }
 	public void setNumCliques(int min, int max, int step) { minNumCliques_ = min; maxNumCliques_ = max; numCliquesStep_ = step; }
 	public void setCliqueSize(int min, int max, int step) { minCliqueSize_ = min; maxCliqueSize_ = max; cliqueSizeStep_ = step; }
-	public void setNetworkFormat(int format) { networkFormat_ = format; }
+	public void setNetworkFormat(Structure.Format format) { networkFormat_ = format; }
 }

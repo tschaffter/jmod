@@ -121,7 +121,7 @@ public class Jmod extends SwingWorker<Void, Void> {
 	private List<URI> inputNetworksURI_ = null;
 	
 	/** File format of the input networks. */
-	private int inputNetworksFormat_ = Structure.UNDEFINED;
+	private Structure.Format inputNetworksFormat_ = Structure.Format.UNDEFINED;
 	
 	/** Directory where the output files are saved (default: current directory). */
 	private URI outputDirectory_ = new File(".").toURI();
@@ -320,7 +320,7 @@ public class Jmod extends SwingWorker<Void, Void> {
 					printHelp();
 				}
 				if (cmd.hasOption("format"))
-					inputNetworksFormat_ = Structure.getType(cmd.getOptionValue("format"));
+					inputNetworksFormat_ = Structure.getFormat(cmd.getOptionValue("format"));
 				else {
 					Log.warn("Jmod", "Network file format not specified.\n");
 					printHelp();
@@ -362,19 +362,19 @@ public class Jmod extends SwingWorker<Void, Void> {
 						// (EACH community and not only the indivisible communities)
 						// if the network format is not recognized or if the dataset option
 						// ALL is selected, the format is set as the format of the input network				
-						int format = Structure.getType(datasets[++i]);
-						if (format == Structure.UNDEFINED) {
-							format = Structure.getType(cmd.getOptionValue("format"));
-							Log.warn("Unrecognized network file format. Saving in " + Structure.FORMAT_STR[format] + " format.");
+						Structure.Format format = Structure.getFormat(datasets[++i]);
+						if (format == Structure.Format.UNDEFINED) {
+							format = Structure.getFormat(cmd.getOptionValue("format"));
+							Log.warn("Unrecognized network file format. Saving in " + format.name() + " format.");
 						}
 						settings.setExportCommunityNetworks(true);
 						settings.setCommunityNetworkFormat(format);
 					}
 					else if (datasets[i].compareTo("COMMUNITY_COLOR") == 0 || datasetAll) {
-						int format = Structure.getType(datasets[++i]);
-						if (format == Structure.UNDEFINED) {
-							format = Structure.getType(cmd.getOptionValue("format"));
-							Log.warn("Unrecognized network file format. Saving in " + Structure.FORMAT_STR[format] + " format.");
+						Structure.Format format = Structure.getFormat(datasets[++i]);
+						if (format == Structure.Format.UNDEFINED) {
+							format = Structure.getFormat(cmd.getOptionValue("format"));
+							Log.warn("Unrecognized network file format. Saving in " + format.name() + " format.");
 						}
 						settings.setExportColoredCommunities(true);
 						settings.setColoredCommunitiesNetworkFormat(format);
@@ -655,8 +655,8 @@ public class Jmod extends SwingWorker<Void, Void> {
 		try {
 			if (canceled_) return;
 			if (settings.getExportCommunityNetworks() && !canceled_) {
-				int communityFormat = settings.getCommunityNetworkFormat();
-				Log.info(networkName, "Writing each community to network file in " + Structure.FORMAT_STR[communityFormat]);
+				Structure.Format communityFormat = settings.getCommunityNetworkFormat();
+				Log.info(networkName, "Writing each community to network file in " + communityFormat.name());
 				getRootCommunity().exportCommunityNetworks(outputDirectory_, communityFormat);
 			}
 		} catch (Exception e) {
@@ -668,7 +668,7 @@ public class Jmod extends SwingWorker<Void, Void> {
 			if (canceled_) return;
 			if (settings.getExportColoredCommunities() && !canceled_) {
 				// get the file format to use for exporting colored communities
-				int networkFormat = settings.getColoredCommunitiesNetworkFormat();		
+				Structure.Format networkFormat = settings.getColoredCommunitiesNetworkFormat();		
 				Log.info(networkName, "Writing the input network with communities colored in GML format");
 				getRootCommunity().exportColorCommunities(outputDirectory_, networkFormat);
 			}
@@ -792,8 +792,8 @@ public class Jmod extends SwingWorker<Void, Void> {
 	public void setInputNetworksRegex(String str) { inputNetworksRegex_ = str; }
 	public String getInputNetworskRegex() { return inputNetworksRegex_; }
 	
-	public void setInputNetworksFormat(int format) { inputNetworksFormat_ = format; }
-	public int getInputNetworksFormat() { return inputNetworksFormat_; }
+	public void setInputNetworksFormat(Structure.Format format) { inputNetworksFormat_ = format; }
+	public Structure.Format getInputNetworksFormat() { return inputNetworksFormat_; }
 	
 	public void setOutputDirectory(URI directory) { outputDirectory_ = directory; }
 	public URI getOutputDirectory() { return outputDirectory_; }

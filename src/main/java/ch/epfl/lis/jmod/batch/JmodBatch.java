@@ -82,7 +82,7 @@ public class JmodBatch {
 	protected List<JmodNetwork> networks_ = null;
 	
 	/** Network file format to use when opening networks from URI. */
-	protected int networkFormat_ = Structure.UNDEFINED;
+	protected Structure.Format networkFormat_ = Structure.Format.UNDEFINED;
 	
 	/** Directory where the output files are saved (default: current directory). */
 	protected URI outputDirectory_ = new File(".").toURI();
@@ -246,7 +246,7 @@ public class JmodBatch {
 			// note the use of the wildcard "*"
 			String inputRegex = new File("rsc/batch").getAbsolutePath() + JmodSettings.FILE_SEPARATOR + "structure_*.tsv";
 			JmodBatch batch = new JmodBatch();
-			batch.setNetworksURI(inputRegex, Structure.TSV);
+			batch.setNetworksURI(inputRegex, Structure.Format.TSV);
 			batch.setOutputDirectory(new File("rsc/batch/output").toURI());
 			batch.run();
 			
@@ -266,7 +266,7 @@ public class JmodBatch {
 	 * use wildcard matching to specify several network files (e.g. ./network_*.tsv).<br>
 	 * Note that List<JmodNetwork> networks_ will be set to null and ignored.
 	 */
-	public void setNetworksURI(String regex, int networkFormat) throws Exception, JmodException {
+	public void setNetworksURI(String regex, Structure.Format networkFormat) throws Exception, JmodException {
 		networksURI_ = NetworkFilenameFilter.findNetworks(regex);
 		networkFormat_ = networkFormat;
 	}
@@ -274,7 +274,7 @@ public class JmodBatch {
 	 * Specify a list of URI pointing to networks to open and process.<br>
 	 * Note that List<JmodNetwork> networks_ will be set to null and ignored.
 	 */
-	public void setNetworksURI(List<URI> networks, int networkFormat) {
+	public void setNetworksURI(List<URI> networks, Structure.Format networkFormat) {
 		networksURI_ = networks;
 		networkFormat_ = networkFormat;	
 	}
@@ -284,8 +284,8 @@ public class JmodBatch {
 	 */
 	public void setNetworks(List<JmodNetwork> networks) { networks_ = networks; }
 	
-	public void setNetworkFormat(int format) { networkFormat_ = format; }
-	public int getNetworkFormat() { return networkFormat_; }
+	public void setNetworkFormat(Structure.Format format) { networkFormat_ = format; }
+	public Structure.Format getNetworkFormat() { return networkFormat_; }
 	
 	/** Set the output directory (current directory if null). */
 	public void setOutputDirectory(URI uri) { outputDirectory_ = uri; }

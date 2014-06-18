@@ -149,7 +149,7 @@ public class LFRBenchmark {
 	private int numRepetitions_ = 20;
 	
 	/** Network format (TSV, GML, DOT, Pajek/NET). */
-	private int networkFormat_ = Structure.TSV;
+	private Structure.Format networkFormat_ = Structure.Format.TSV;
 	
 	/** Number of networks to generate (used to track progress). */
 	private int numWorkers_ = 0;
@@ -173,7 +173,7 @@ public class LFRBenchmark {
 //			benchmark.setNumRepetitions(20); // number of networks generated for each set of parameters
 			// weighted networks (true: mut=muw, false: mut=0.5)
 			benchmark.setMutEqualToMuw(false);
-			benchmark.setNetworkFormat(Structure.TSV);
+			benchmark.setNetworkFormat(Structure.Format.TSV);
 			benchmark.generate();
 			
 		} catch (Exception e) {
@@ -368,7 +368,7 @@ public class LFRBenchmark {
 	public void setBeta(double beta) { beta_ = beta; }
 	public void setOverlappingNodes(int on, int om) { on_ = on; om_ = om; }
 	public void setNumRepetitions(int numRepetitions) { numRepetitions_ = numRepetitions; }
-	public void setNetworkFormat(int format) { networkFormat_ = format; }
+	public void setNetworkFormat(Structure.Format format) { networkFormat_ = format; }
 	
 	/** Synchronized method to avoid issue with workers trying to create the same directory at the same time. */
 	public synchronized void mkdir(File directoryFile) throws Exception { FileUtils.forceMkdir(directoryFile); }
@@ -426,14 +426,14 @@ public class LFRBenchmark {
 				String rootFilename = targetDirectory_ + "network_" + networkIndex_;
 				
 				String srcFilename = tmpDirectory + "network.dat";
-				String targetFilename = rootFilename + Structure.FORMAT_EXTENSIONS[networkFormat_];
+				String targetFilename = rootFilename + Structure.getFormatExtension(networkFormat_);
 				
 				FileUtils.deleteQuietly(new File(targetFilename));
-				if (networkFormat_ == Structure.TSV)
+				if (networkFormat_ == Structure.Format.TSV)
 					FileUtils.moveFile(new File(srcFilename), new File(targetFilename));
 				else {
 					JmodNetwork network = new JmodNetwork();
-					network.read(new File(srcFilename).toURI(), Structure.TSV);
+					network.read(new File(srcFilename).toURI(), Structure.Format.TSV);
 					network.write(new File(targetFilename).toURI(), networkFormat_);
 				}
 				

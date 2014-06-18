@@ -217,7 +217,7 @@ public class RootCommunity extends Community {
 	// ----------------------------------------------------------------------------
 	
 	/** Exports the communities to network files. */
-	public void exportCommunityNetworks(URI directory, int format) throws Exception{
+	public void exportCommunityNetworks(URI directory, Structure.Format format) throws Exception{
 		
 		// test the validity of the output directory before going further
 		if (directory == null) // set to current directory
@@ -281,7 +281,7 @@ public class RootCommunity extends Community {
 	 * Export the original network with the node being colored depending on which
 	 * community they belong to.
 	 */
-	public void exportColorCommunities(URI directory, int format) throws Exception, JmodException {
+	public void exportColorCommunities(URI directory, Structure.Format format) throws Exception, JmodException {
 		
 		// backup original node colors
 		JmodNetwork network = modularityDetector_.getNetwork();
@@ -307,12 +307,12 @@ public class RootCommunity extends Community {
 		colorIndivisibleCommunityNodes(colorIterator);
 		if (colorIterator.hasNext())
 			throw new JmodException("There is an inconsistency at the level of the number of indivisible communities.");
-		URI uri = new File(outputDirectoryStr + rawFilename + "_color_indivisible_communities" + Structure.FORMAT_EXTENSIONS[format]).toURI();
+		URI uri = new File(outputDirectoryStr + rawFilename + "_color_indivisible_communities" + Structure.getFormatExtension(format)).toURI();
 		Log.info(network.getName(), "Writing indivisible communities colored " + uri.getPath());
 		
-		if (format == Structure.GML)
+		if (format == Structure.Format.GML)
 			network.writeGML(uri);
-		else if (format == Structure.DOT)
+		else if (format == Structure.Format.DOT)
 			network.writeDOT(uri);
 		else
 			throw new Exception("ERROR: Unknown format for exporting colored communities.");
@@ -324,12 +324,12 @@ public class RootCommunity extends Community {
 				return;
 			
 			colorCommunityNodes(depth);
-			uri = new File(outputDirectoryStr + rawFilename + "_color_depth_" + depth + Structure.FORMAT_EXTENSIONS[format]).toURI();
+			uri = new File(outputDirectoryStr + rawFilename + "_color_depth_" + depth + Structure.getFormatExtension(format)).toURI();
 			Log.info(network.getName(), "Writing communities (size: " + getCommunitySize() + ", depth: " + depth + ") colored " + uri.getPath());
 			
-			if (format == Structure.GML)
+			if (format == Structure.Format.GML)
 				network.writeGML(uri);
-			else if (format == Structure.DOT)
+			else if (format == Structure.Format.DOT)
 				network.writeDOT(uri);
 			else
 				throw new Exception("ERROR: Unknown format for exporting colored communities.");

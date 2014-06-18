@@ -74,7 +74,7 @@ public class JmodWorker implements Callable<Void> {
 	protected JmodNetwork network_ = null;
 	
 	/** Network type. */
-	protected int networkFormat_ = Structure.UNDEFINED;
+	protected Structure.Format networkFormat_ = Structure.Format.UNDEFINED;
 	/** Output directory. */
 	protected URI outputDirectory_ = null;
 	
@@ -114,7 +114,7 @@ public class JmodWorker implements Callable<Void> {
 			// Looks for the file containing the identity of the community (mainly used by
 			// the method "Known modules"). Removes the extension of the network filename
 			// and add complete the filename accordingly.
-			String communityIndexesFilename = networkURI_.getPath().replace(Structure.FORMAT_EXTENSIONS[networkFormat_], "") + 
+			String communityIndexesFilename = networkURI_.getPath().replace(Structure.getFormatExtension(networkFormat_), "") + 
 				JmodSettings.COMMUNITY_IDENTITIES_FILENAME_SUFFIX;
 			File communityIndexesFile = new File(communityIndexesFilename);
 			if (communityIndexesFile.exists()) {
@@ -175,8 +175,8 @@ public class JmodWorker implements Callable<Void> {
 	public void setNetwork(JmodNetwork network) { network_ = network; }
 	public JmodNetwork getNetwork() { return network_; }
 	
-	public void setNetworkFormat(int format) { networkFormat_ = format; }
-	public int getNetworkFormat() { return networkFormat_; }
+	public void setNetworkFormat(Structure.Format format) { networkFormat_ = format; }
+	public Structure.Format getNetworkFormat() { return networkFormat_; }
 	
 	public void setOutputDirectory(URI uri) { outputDirectory_ = uri; }
 	public URI getOutputDirectory() { return outputDirectory_; }

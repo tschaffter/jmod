@@ -119,6 +119,7 @@ public class NetworkFilenameFilter implements FilenameFilter {
 //		Log.debug("Listing networks matching: " + truncatedRegex);
 		
 		String[] children = directoryFile.list(new NetworkFilenameFilter(truncatedRegex));
+		
 		Arrays.sort(children);
 		List<URI> networks = new ArrayList<URI>();
 		for (int i = 0; i < children.length; i++) {

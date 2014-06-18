@@ -77,11 +77,11 @@ public class JmodSettings {
 	/** Saves each community to network file in the given format. */
 	private boolean exportCommunityNetworks_ = false;
 	/** Network file format in which communities are saved. */
-	private int communityNetworkFormat_ = Structure.TSV;
+	private Structure.Format communityNetworkFormat_ = Structure.Format.TSV;
 	/** Saves input network with communities colored. */
 	private boolean exportColoredCommunities_ = false;
 	/** Format for saving colored communities (GML or DOT). */
-	private int coloredCommunitiesNetworkFormat_ = Structure.GML;
+	private Structure.Format coloredCommunitiesNetworkFormat_ = Structure.Format.GML;
 	/** Saves the dendrogram of the hierarchical community tree. */
 	private boolean exportCommunityTree_ = false;
 	/** Saves snapshots of the state of the running modularity detection. */
@@ -231,14 +231,14 @@ public class JmodSettings {
 	public void setExportCommunityNetworks(boolean b) { exportCommunityNetworks_ = b; }
 	public boolean getExportCommunityNetworks() { return exportCommunityNetworks_; }
 	
-	public void setCommunityNetworkFormat(int format) { communityNetworkFormat_ = format; }
-	public int getCommunityNetworkFormat() { return communityNetworkFormat_; }
+	public void setCommunityNetworkFormat(Structure.Format format) { communityNetworkFormat_ = format; }
+	public Structure.Format getCommunityNetworkFormat() { return communityNetworkFormat_; }
 	
 	public void setExportColoredCommunities(boolean b) { exportColoredCommunities_ = b; }
 	public boolean getExportColoredCommunities() { return exportColoredCommunities_; }
 	
-	public void setColoredCommunitiesNetworkFormat(int networkFormat) { coloredCommunitiesNetworkFormat_ = networkFormat; }
-	public int getColoredCommunitiesNetworkFormat() { return coloredCommunitiesNetworkFormat_; }
+	public void setColoredCommunitiesNetworkFormat(Structure.Format networkFormat) { coloredCommunitiesNetworkFormat_ = networkFormat; }
+	public Structure.Format getColoredCommunitiesNetworkFormat() { return coloredCommunitiesNetworkFormat_; }
 	
 	public void setExportCommunityTree(boolean b) { exportCommunityTree_ = b; }
 	public boolean getExportCommunityTree() { return exportCommunityTree_; }

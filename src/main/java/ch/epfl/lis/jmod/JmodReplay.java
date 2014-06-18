@@ -105,9 +105,9 @@ public class JmodReplay {
 	/** Network used to export the snapshot (could include graphics data). */
 	protected JmodNetwork network_ = null;
 	/** Format of the input network which serves as template for graphics. */
-	protected int networkInputFormat_ = Structure.GML;
+	protected Structure.Format networkInputFormat_ = Structure.Format.GML;
 	/** Format of the snapshot output networks. */
-	protected int networkOutputFormat_ = Structure.GML;
+	protected Structure.Format networkOutputFormat_ = Structure.Format.GML;
 	
 	/** Export states that are not different from previous. */
 	protected boolean exportUnchangedSnapshots_ = true;
@@ -233,7 +233,7 @@ public class JmodReplay {
 		URI snapshotUri = new File(snapshotsDirectory_ + snapshotsBaseNames_.get(snapshotIndex)).toURI();
 		String outputNetworkFilename = outputDirectory_ +
 			snapshotsBaseNames_.get(snapshotIndex).substring(0, snapshotsBaseNames_.get(snapshotIndex).lastIndexOf('.')) + // filename without extension
-			Structure.FORMAT_EXTENSIONS[networkOutputFormat_]; // adds extension
+			Structure.getFormatExtension(networkOutputFormat_); // adds extension
 		
 		// modifies the output filename to make it compatible with programs that allows to load image sequences like VirtualDub
 		// VirtualDub: filenames must end with NUMBER*.ext where * can be anything but must be the same in all filenames
@@ -242,7 +242,7 @@ public class JmodReplay {
 			outputNetworkFilename = getStringBeforeUnderscoreNumberUnderscore(snapshotsBaseNames_.get(snapshotIndex));
 			if (outputNetworkFilename == null)
 				throw new Exception("There is no pattern _NUMBER_ in the filename " + snapshotsBaseNames_.get(snapshotIndex) + ".");
-			outputNetworkFilename = outputDirectory_ + outputNetworkFilename + "_" + snapshotIndex + Structure.FORMAT_EXTENSIONS[networkOutputFormat_];
+			outputNetworkFilename = outputDirectory_ + outputNetworkFilename + "_" + snapshotIndex + Structure.getFormatExtension(networkOutputFormat_);
 		}
 	
 		URI outputNetworkUri = new File(outputNetworkFilename).toURI();
@@ -456,7 +456,7 @@ public class JmodReplay {
 		readColorsMods();
 		
 		// update the nodes graphics data in case they originate from Cytoscape
-		if (cytoscapeGraphics_ && networkOutputFormat_ == Structure.DOT)
+		if (cytoscapeGraphics_ && networkOutputFormat_ == Structure.Format.DOT)
 			convertCytoscapeNodeGraphicsForDotFormat();
 		
 		// export the snapshots to network files
@@ -475,8 +475,8 @@ public class JmodReplay {
 			JmodReplay replay = new JmodReplay();
 			replay.setSnapshotRegex("/home/tschaffter/jmod_ga_animation/karate_movie/BF_multi/karate_*.txt");
 //			replay.setSnapshotRegex("/home/tschaffter/jmod_ga_animation/LFR_movie/GA/network_1_big_*.txt");
-			replay.setNetworkOutputFormat(Structure.DOT);
-			replay.setInputNetwork("/home/tschaffter/jmod_ga_animation/karate_movie/karate_movie_2.gml", Structure.GML);
+			replay.setNetworkOutputFormat(Structure.Format.DOT);
+			replay.setInputNetwork("/home/tschaffter/jmod_ga_animation/karate_movie/karate_movie_2.gml", Structure.Format.GML);
 //			replay.setInputNetwork("/home/tschaffter/jmod_ga_animation/LFR_movie/network_1_big_cys_jmod.gml", Structure.GML);
 			replay.setColorsLUTFilename(null);
 			replay.setCytoscapeGraphics(true);
@@ -495,7 +495,7 @@ public class JmodReplay {
 	// ============================================================================
 	// GETTERS AND SETTERS
 	
-	public void setInputNetwork(String networkFilename, int networkFormat) throws Exception {
+	public void setInputNetwork(String networkFilename, Structure.Format networkFormat) throws Exception {
 		
 		network_ = new JmodNetwork();
 		network_.read(new File(networkFilename).toURI(), networkFormat);
@@ -510,7 +510,7 @@ public class JmodReplay {
 	}
 	
 	public void setSnapshotRegex(String regex) { snapshotRegex_ = regex; }
-	public void setNetworkOutputFormat(int networkFormat) { networkOutputFormat_ = networkFormat; }
+	public void setNetworkOutputFormat(Structure.Format networkFormat) { networkOutputFormat_ = networkFormat; }
 	
 	/** If null, uses the default color file and generates it if not existing. */
 	public void setColorsLUTFilename(String filename) { colorsLUTFilename_ = filename; }

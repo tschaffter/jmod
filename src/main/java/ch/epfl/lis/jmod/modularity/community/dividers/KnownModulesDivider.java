@@ -500,7 +500,7 @@ public class KnownModulesDivider extends CommunityDivider  {
 		double[] mus = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9}; // {0.1}; // do 0.75
 		int firstNetworkIndex = 1;
 		int lastNetworkIndex = 100;
-		int networkFormat = Structure.TSV;
+		Structure.Format networkFormat = Structure.Format.TSV;
 		
 		int counter = 0;
 		int counterThreshold = 20;
@@ -523,7 +523,7 @@ public class KnownModulesDivider extends CommunityDivider  {
 	// ----------------------------------------------------------------------------
 	
 	/** Computes the modularity of one LFR benchmark graph. */
-	public static void processLFRNetwork(String benchmarkDirectory, int N, String communitySize, double mu, int networkIndex, int networkFormat) throws Exception {
+	public static void processLFRNetwork(String benchmarkDirectory, int N, String communitySize, double mu, int networkIndex, Structure.Format networkFormat) throws Exception {
 		
 		// for computing runtime
 		long t0 = System.currentTimeMillis();

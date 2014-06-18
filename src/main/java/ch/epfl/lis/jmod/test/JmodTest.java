@@ -238,7 +238,7 @@ public class JmodTest {
 	public int runTest(String filename, double expectedQ) throws Exception {
 		
 		JmodNetwork network = new JmodNetwork();
-		network.read(new File("rsc/test/" + filename).toURI(), Structure.GML);
+		network.read(new File("rsc/test/" + filename).toURI(), Structure.Format.GML);
 		
 		Jmod jmod = new Jmod();
 		jmod.runModularityDetection(network);

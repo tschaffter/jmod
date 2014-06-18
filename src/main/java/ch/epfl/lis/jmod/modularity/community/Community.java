@@ -341,7 +341,7 @@ public class Community {
 	// ----------------------------------------------------------------------------
 	
 	/** Exports the community to network file. This method is called recursively for each children (if any). */
-	public void exportCommunityNetworks(final URI directory, final String baseNetworkName, final int format) throws Exception, JmodException {
+	public void exportCommunityNetworks(final URI directory, final String baseNetworkName, final Structure.Format format) throws Exception, JmodException {
 		
 		if ((child1_ == null && child2_ != null) || (child1_ != null && child2_ == null))
 			throw new JmodException("A community must have zero or two children.");
@@ -353,7 +353,7 @@ public class Community {
 		
 		// build the structure object and save it to file
 		String outputDirectoryStr = FilenameUtils.getFullPath(directory.getPath());
-		URI uri = new File(outputDirectoryStr + baseNetworkName + "_" + name_ + Structure.FORMAT_EXTENSIONS[format]).toURI();
+		URI uri = new File(outputDirectoryStr + baseNetworkName + "_" + name_ + Structure.getFormatExtension(format)).toURI();
 		
 		Structure<Node,Edge<Node>> communityNetwork = modularityDetector_.getNetwork().getSubnetworkFromNodeIndexes("", nodeIndexes);
 		Log.info(modularityDetector_.getNetwork().getName(), "Writing community network (size: " + getCommunitySize() + ", depth: " + getDepthInCommunityTree() + ") " + uri.getPath());

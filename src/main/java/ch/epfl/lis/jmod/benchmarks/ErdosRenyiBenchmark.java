@@ -92,7 +92,7 @@ public class ErdosRenyiBenchmark {
 	private int numRepetitions_ = 2;
 	
 	/** Network format (TSV, GML, DOT, Pajek/NET). */
-	private int networkFormat_ = Structure.TSV;
+	private Structure.Format networkFormat_ = Structure.Format.TSV;
 	
 	/** Number of networks to generate (used to track progress). */
 	private int numWorkers_ = 0;
@@ -192,7 +192,7 @@ public class ErdosRenyiBenchmark {
 	public void setK(int k) { mink_ = maxk_ = kStep_ = k; }
 	public void setK(int mink, int maxk, int kStep) { mink_ = mink; maxk_ = maxk; kStep_ = kStep; }
 	public void setNumRepetitions(int numRepetitions) { numRepetitions_ = numRepetitions; }
-	public void setNetworkFormat(int format) { networkFormat_ = format; }
+	public void setNetworkFormat(Structure.Format format) { networkFormat_ = format; }
 	
 	/** Synchronized method to avoid issue with workers trying to create the same directory at the same time. */
 	public synchronized void mkdir(File directoryFile) throws Exception { FileUtils.forceMkdir(directoryFile); }
@@ -241,7 +241,7 @@ public class ErdosRenyiBenchmark {
 				
 				// save network
 				String networkRootFilename = targetDirectory_ + "network_" + networkIndex_;
-				String networkFilename = networkRootFilename + Structure.FORMAT_EXTENSIONS[networkFormat_];
+				String networkFilename = networkRootFilename + Structure.getFormatExtension(networkFormat_);
 				network.write(new File(networkFilename).toURI(), networkFormat_);
 				
 				// saves _community.dat

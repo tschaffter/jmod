@@ -184,7 +184,7 @@ public class JmodNetwork extends Structure<Node,Edge<Node>> {
 	// ----------------------------------------------------------------------------
 	
 	@Override
-	public void read(URI uri, int format) throws FileNotFoundException, Exception {
+	public void read(URI uri, Structure.Format format) throws FileNotFoundException, Exception {
 		
 		super.read(uri, format);
 		
@@ -269,7 +269,7 @@ public class JmodNetwork extends Structure<Node,Edge<Node>> {
 		
 		try {
 			JmodNetwork network = new JmodNetwork();
-			network.read(new File("rsc/jmod/polbooks.gml").toURI(), Structure.GML);
+			network.read(new File("rsc/jmod/polbooks.gml").toURI(), Structure.Format.GML);
 			network.initializeModularityDetectionVariables();
 			
 		} catch (Exception e) {

@@ -156,7 +156,7 @@ public class JmodGui extends JmodDialog implements ActionListener {
 		
 		// add document lister to know when counting the number of selected networks
 		inputNetworksTField_.getDocument().addDocumentListener(new InputNetworksDocumentListener());
-		inputNetworksFormatCBox_.setModel(new DefaultComboBoxModel<String>(Structure.FORMAT_STR));
+		inputNetworksFormatCBox_.setModel(new DefaultComboBoxModel<String>(Structure.getFormatStrings()));
 		inputNetworksTField_.addActionListener(this);
 		inputNetworksBrowse_.addActionListener(this);
 		
@@ -188,8 +188,17 @@ public class JmodGui extends JmodDialog implements ActionListener {
 		
 		datasetModularityCBox_.setSelected(settings.getExportBasicDataset());
 		datasetCommunitiesCBox_.setSelected(settings.getExportCommunityNetworks());
-		datasetCommunitiesFormatCBox_.setModel(new DefaultComboBoxModel<String>(Structure.FORMAT_STR));
-		datasetCommunitiesFormatCBox_.setSelectedIndex(settings.getCommunityNetworkFormat());
+		
+		String[] formats = Structure.getFormatStrings();
+		datasetCommunitiesFormatCBox_.setModel(new DefaultComboBoxModel<String>(formats));
+		Structure.Format selectedFormat = settings.getCommunityNetworkFormat();
+		for (int i = 0; i < formats.length; i++) {
+			if (selectedFormat.name().equals(formats[i])) {
+				datasetCommunitiesFormatCBox_.setSelectedIndex(i);
+				break;
+			}
+		}
+		
 		datasetCommunitiesFormatCBox_.setEnabled(settings.getExportCommunityNetworks());
 		datasetColoredCommunitiesCBox_.setSelected(settings.getExportColoredCommunities());
 		coloredCommunitiesNetworkFormatCBox_.setEnabled(settings.getExportColoredCommunities());
@@ -478,15 +487,20 @@ public class JmodGui extends JmodDialog implements ActionListener {
 		settings.setNumConcurrentModuleDetections((Integer) numProcessorsSpinner_.getModel().getValue());
 		settings.setExportBasicDataset(datasetModularityCBox_.isSelected());
 		settings.setExportCommunityNetworks(datasetCommunitiesCBox_.isSelected());
-		settings.setCommunityNetworkFormat(datasetCommunitiesFormatCBox_.getSelectedIndex());
+		
+//		settings.setCommunityNetworkFormat(datasetCommunitiesFormatCBox_.getSelectedIndex());
+		String selectedFormat = (String) datasetCommunitiesFormatCBox_.getSelectedItem();
+		settings.setCommunityNetworkFormat(Structure.getFormat(selectedFormat));
+		
 		settings.setExportColoredCommunities(datasetColoredCommunitiesCBox_.isSelected());
 		settings.setExportCommunityTree(datasetCommunityTreeCBox_.isSelected());
 		settings.setExportSnapshots(datasetSnapshotsCBox_.isSelected());
 		
 		String coloredCommunitiesNetworkFormatStr = (String)coloredCommunitiesNetworkFormatCBox_.getSelectedItem();
-		for (int i = 0; i < Structure.FORMAT_STR.length; i++) {
-			if (coloredCommunitiesNetworkFormatStr.compareTo(Structure.FORMAT_STR[i]) == 0)
-				settings.setColoredCommunitiesNetworkFormat(i);
+		String[] formats = Structure.getFormatStrings();
+		for (int i = 0; i < formats.length; i++) {
+			if (coloredCommunitiesNetworkFormatStr.compareTo(formats[i]) == 0)
+				settings.setColoredCommunitiesNetworkFormat(Structure.getFormat(coloredCommunitiesNetworkFormatStr));
 		}
 		
 		modularityDetectionSnake_.start();
@@ -496,7 +510,11 @@ public class JmodGui extends JmodDialog implements ActionListener {
 		
 		jmod_ = new Jmod();
 		jmod_.setInputNetworksRegex(inputNetworksTField_.getText());
-		jmod_.setInputNetworksFormat(inputNetworksFormatCBox_.getSelectedIndex());
+		
+//		jmod_.setInputNetworksFormat(inputNetworksFormatCBox_.getSelectedIndex());
+		selectedFormat = (String) inputNetworksFormatCBox_.getSelectedItem();
+		jmod_.setInputNetworksFormat(Structure.getFormat(selectedFormat));
+		
 		jmod_.setOutputDirectory(new File(outputDirectoryTField_.getText()).toURI());
 		jmod_.execute();
 		

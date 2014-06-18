@@ -62,45 +62,22 @@ import ch.epfl.lis.networks.parsers.GMLParser;
  */
 public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFactory<E>> {
 	
-//	/** Supported network format. */
-//	public static enum Format {
-//		/**
-//		 * TSV format.<p>
-//		 * For unsigned networks, each line defines an edge:<br>
-//		 * <pre>
-//		 * TF \tab target \tab weight
-//		 * </pre>
-//		 * where TF and target are node IDs, and weight is the weight of the interaction.
-//		 */
-//		TSV,
-//		GML,
-//		DOT,
-//		NET,
-//		undefined;
-//	}
-	
-	/**
-	 * TSV format.<p>
-	 * For unsigned networks, each line defines an edge:<br>
-	 * <pre>
-	 * TF \tab target \tab weight
-	 * </pre>
-	 * where TF and target are node IDs, and weight is the weight of the interaction.
-	 */
-	public static final int TSV = 0;
-	/** GML file format. */
-	public static final int GML = 1;
-	/** DOT file format. */
-	public static final int DOT = 2;
-	/** Pajek/net file format. */
-	public static final int NET = 3;
-	/** Undefined file format. */
-	public static final int UNDEFINED = -1;
-	
-	/** Types of structure file formats supported. */
-	public static final String[] FORMAT_STR = {"TSV", "GML", "DOT", "NET"};
-	/** Extension of the supported file formats. */
-	public static final String[] FORMAT_EXTENSIONS = {".tsv", ".gml", ".dot", ".net"};
+	/** Supported network format. */
+	public static enum Format {
+		/**
+		 * TSV format.<p>
+		 * For unsigned networks, each line defines an edge:<br>
+		 * <pre>
+		 * TF \tab target \tab weight
+		 * </pre>
+		 * where TF and target are node IDs, and weight is the weight of the interaction.
+		 */
+		TSV,
+		GML,
+		DOT,
+		NET,
+		UNDEFINED; // must be listed last
+	}
 	
 	/** Seed for random number generator. Set to -1 by default to use new java.util.Date() as seed. */
 	public static int uniformSeed_ = -1;
@@ -729,18 +706,18 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	// ----------------------------------------------------------------------------
 
 	/** Reads a network structure from a file URL (network format must be specify). */
-	public void read(URI uri, int format) throws FileNotFoundException, Exception, NetworkException {
+	public void read(URI uri, Format format) throws FileNotFoundException, Exception, NetworkException {
 		
-		if (format == Structure.TSV) {
+		if (format == Format.TSV) {
 			TSVParser<N, E> parser = new TSVParser<N, E>(this);
 			parser.read(uri);
-		} else if (format == Structure.GML) {
+		} else if (format == Format.GML) {
 			GMLParser<N,E> parser = new GMLParser<N, E>(this);
 			parser.read(uri);
-		} else if (format == Structure.DOT) {
+		} else if (format == Format.DOT) {
 			DOTParser<N,E> parser = new DOTParser<N,E>(this);
 			parser.read(uri);
-		} else if (format == Structure.NET) { 
+		} else if (format == Format.NET) { 
 			NETParser<N,E> parser = new NETParser<N,E>(this);
 			parser.read(uri);
 		} else
@@ -750,15 +727,15 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	// ----------------------------------------------------------------------------
 	
 	/** Saves the network structure to file using the given format. */
-	public void write(URI uri, int format) throws Exception, NetworkException {
+	public void write(URI uri, Format format) throws Exception, NetworkException {
 
-		if (format == Structure.TSV)
+		if (format == Format.TSV)
 			writeTSV(uri);
-		else if (format == Structure.GML)
+		else if (format == Format.GML)
 			writeGML(uri);
-		else if (format == Structure.DOT)
+		else if (format == Format.DOT)
 			writeDOT(uri);
-		else if (format == Structure.NET)
+		else if (format == Format.NET)
 			writePajekNET(uri);
 		else
 			throw new NetworkException("Unknown structure file format " + format + ".");
@@ -859,13 +836,50 @@ public class Structure<N extends INode & IFactory<N>, E extends IEdge<N> & IFact
 	// ----------------------------------------------------------------------------
 	
 	/** Returns the network type associated to the given string. */
-	public static int getType(String typeStr) {
+	public static Format getFormat(String typeStr) {
 		
-		for (int i = 0; i < FORMAT_STR.length; i++) {
-			if (typeStr.compareTo(FORMAT_STR[i]) == 0)
-				return i;
+		for (Format format : Format.values()) {
+			if (format.name().equals(typeStr))
+				return format;
 		}
-		return UNDEFINED;
+		return Format.UNDEFINED;
+	}
+	
+	// ----------------------------------------------------------------------------
+	
+	/** Returns the extension associated to the given format (includes dot). */
+	public static String getFormatExtension(Format format) {
+		
+		return "." + format.name().toLowerCase();
+	}
+	
+	// ----------------------------------------------------------------------------
+	
+	/** Returns an array that includes all the structure formats. */
+	public static String[] getFormatStrings() {
+		
+		String[] array = new String[Format.values().length-1]; // don't include UNDEFINED
+		int i = 0;
+		for (Format format : Format.values()) {
+			if (i < array.length)
+				array[i++] = format.name();
+		}
+		return array;
+	}
+	
+	// ----------------------------------------------------------------------------
+	
+	/** Returns an array that includes all the structure formats' extensions. */
+	public static String[] getFormatExtensions() {
+		
+		String[] array = new String[Format.values().length-1]; // don't include UNDEFINED
+		int i = 0;
+		for (Format format : Format.values()) {
+			if (i < array.length)
+				array[i++] = getFormatExtension(format);
+		}
+		
+		return array;
 	}
 	
 	// ----------------------------------------------------------------------------

@@ -30,6 +30,8 @@ import java.net.URISyntaxException;
 
 import javax.swing.SwingWorker;
 
+import com.esotericsoftware.minlog.Log;
+
 import ch.epfl.lis.jmod.JmodException;
 import ch.epfl.lis.jmod.batch.NetworkFilenameFilter;
 import ch.epfl.lis.networks.Structure;
@@ -81,6 +83,7 @@ public class NetworksSelectionUpdater extends SwingWorker<Void, Void> {
 		gui.inputNetworksCardLayout_.show(gui.inputNetworksLabelPanel_, "CARD_INPUT_NETWORKS_SNAKE");
 
 		numNetworks_ = NetworkFilenameFilter.findNetworks(regex_).size();
+
 		
 		return null;
 	}
@@ -98,19 +101,20 @@ public class NetworksSelectionUpdater extends SwingWorker<Void, Void> {
 			get();
 			
 			// displays the result
-			if (numNetworks_ == null)
+			if (numNetworks_ == null || numNetworks_ == 0)
 				JmodGui.setNumSelectedNetworks(0);
 			else {
 				JmodGui.setNumSelectedNetworks(numNetworks_);
 				// changes the network type if the input string end with a known extension
-				for (int i = 0; i < Structure.FORMAT_EXTENSIONS.length; i++) {
-					if (regex_.endsWith(Structure.FORMAT_EXTENSIONS[i]))
+				String[] extensions = Structure.getFormatExtensions();
+				for (int i = 0; i < extensions.length; i++) {
+					if (regex_.endsWith(extensions[i]))
 						JmodGui.getInstance().inputNetworksFormatCBox_.setSelectedIndex(i);
 				}
 			}
 			
 		} catch (Exception e) {
-			//Log.error("NetworksSelectionUpdater", "Error updating the networks selection.");
+			Log.error("NetworksSelectionUpdater", "Error updating the networks selection.", e);
 			JmodGui.setNumSelectedNetworks(0);
 		}
 	}
